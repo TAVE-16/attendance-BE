@@ -7,3 +7,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+
+tave:
+  key: ${JWT_SECRET_KEY}
+  accessTokenExpiration: ${JWT_ACCESS_TOKEN_EXPIRATION}
