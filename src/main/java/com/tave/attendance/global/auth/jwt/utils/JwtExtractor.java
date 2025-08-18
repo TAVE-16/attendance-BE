@@ -24,7 +24,7 @@ public class JwtExtractor {
     }
 
     public Optional<String> extractJwtToken(HttpServletRequest request) {
-        return Optional.ofNullable(request.getHeader(ACCESS_TOKEN_HEADER))
+        return Optional.ofNullable(request.getHeader(AUTH_HEADER))
                 .filter(refreshToken -> refreshToken.startsWith(AUTH_PREFIX))
                 .map(refreshToken -> refreshToken.replace(AUTH_PREFIX, ""));
     }
