@@ -20,8 +20,11 @@ import static com.tave.attendance.global.common.exception.ErrorCode.*;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    private static final String LOG_FORMAT = "Class : {}, Code : {}, Message : {}";
+
     @ExceptionHandler(BaseException.class)
     public ResponseEntity<ApiResponse<Void>> handleBaseException(BaseException e) {
+        logWarning(e, e.getStatus().value());
         return responseException(e.getStatus(), e.getMessage(), null);
     }
 
@@ -38,21 +41,21 @@ public class GlobalExceptionHandler {
                 ))
                 .toList();
 
+        logWarning(e, errorCode.getStatus().value());
         return responseException(errorCode.getStatus(), errorCode.getMessage(), errors);
     }
 
     @ExceptionHandler(NoResourceFoundException.class)
     public ResponseEntity<ApiResponse<Void>> handleNoResourceFound(NoResourceFoundException e) {
         ErrorCode errorCode = RESOURCE_NOT_FOUND;
+        logWarning(e, errorCode.getStatus().value());
         return responseException(errorCode.getStatus(), errorCode.getMessage(), null);
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Void>> handleException(Exception e) {
-        log.error(e.getMessage(), e);
-
         ErrorCode errorCode = INTERNAL_SERVER_ERROR;
-
+        logWarning(e, errorCode.getStatus().value());
         return responseException(errorCode.getStatus(), e.getMessage(), null);
     }
 
@@ -62,6 +65,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(status)
                 .body(response);
+    }
+
+    private void logWarning(Exception e, int errorCode) {
+        log.warn(e.getMessage(), e);
+        log.warn(LOG_FORMAT, e.getClass().getSimpleName(), errorCode, e.getMessage());
     }
 
 }
