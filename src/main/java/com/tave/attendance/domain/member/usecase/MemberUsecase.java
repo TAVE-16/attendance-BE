@@ -1,14 +1,12 @@
 package com.tave.attendance.domain.member.usecase;
 
 import com.tave.attendance.domain.member.entity.Member;
-import com.tave.attendance.domain.member.exception.AuthenticationException;
 import com.tave.attendance.domain.member.service.AuthService;
 import com.tave.attendance.domain.member.service.MemberGetService;
 import com.tave.attendance.domain.member.service.MemberSaveService;
 import com.tave.attendance.global.auth.jwt.dto.JwtTokenResponseDto;
 import com.tave.attendance.global.auth.jwt.service.JwtService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import static com.tave.attendance.domain.member.dto.AdminDto.*;
@@ -27,7 +25,7 @@ public class MemberUsecase {
         memberSaveService.saveAdmin(registerDto);
     }
 
-    public JwtTokenResponseDto authenticateAdmin(AuthInfo loginDto) {
+    public JwtTokenResponseDto loginAdmin(AuthInfo loginDto) {
         // 인증 절차
         Member findAdmin = memberGetService.findMember(loginDto.email());
         authService.checkPassword(loginDto.password(), findAdmin.getPassword());

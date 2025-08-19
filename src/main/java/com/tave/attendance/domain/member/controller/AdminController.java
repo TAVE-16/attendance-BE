@@ -26,7 +26,7 @@ public class AdminController {
 
     @PostMapping("/v1/admin/signin")
     public ApiResponse<JwtTokenResponseDto> loginAdmin(@RequestBody AuthInfo dto) {
-        JwtTokenResponseDto response = memberUsecase.authenticateAdmin(dto);
+        JwtTokenResponseDto response = memberUsecase.loginAdmin(dto);
         return ApiResponse.response(HttpStatus.OK, ADMIN_LOGIN_SUCCESS.getMessage(), response);
     }
 
