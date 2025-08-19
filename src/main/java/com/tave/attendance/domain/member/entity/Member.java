@@ -28,6 +28,9 @@ public class Member extends BaseTimeEntity {
     @Column(name = "email", unique = true)
     String email;
 
+    @Column(name = "password")
+    String password;
+
     @Column(name = "birthday")
     String birthday;
 
