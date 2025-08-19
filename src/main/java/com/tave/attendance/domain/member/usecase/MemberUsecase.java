@@ -19,9 +19,21 @@ import static com.tave.attendance.domain.member.dto.AdminDto.*;
 public class MemberUsecase {
 
     private final MemberSaveService memberSaveService;
+    private final MemberGetService memberGetService;
+    private final AuthService authService;
+    private final JwtService jwtService;
 
     public void registerAdmin(AuthInfo registerDto) {
         memberSaveService.saveAdmin(registerDto);
+    }
+
+    public JwtTokenResponseDto authenticateAdmin(AuthInfo loginDto) {
+        // 인증 절차
+        Member findAdmin = memberGetService.findMember(loginDto.email());
+        authService.checkPassword(loginDto.password(), findAdmin.getPassword());
+
+        // 토큰 발급
+        return jwtService.generateJwtToken(findAdmin.getId(), findAdmin.getRole());
     }
 
 }
