@@ -1,6 +1,6 @@
 package com.tave.attendance.global.auth.guards;
 
-import com.tave.attendance.domain.member.Role;
+import com.tave.attendance.domain.member.entity.Role;
 
 public abstract class Guard {
     public final Role role;

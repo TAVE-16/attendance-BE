@@ -1,6 +1,6 @@
 package com.tave.attendance.global.auth.aspect;
 
-import com.tave.attendance.domain.member.Role;
+import com.tave.attendance.domain.member.entity.Role;
 import com.tave.attendance.global.auth.annotations.AuthGuard;
 import com.tave.attendance.global.auth.context.MemberContext;
 import com.tave.attendance.global.auth.guards.Authorizable;

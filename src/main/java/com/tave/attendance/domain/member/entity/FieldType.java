@@ -1,4 +1,4 @@
-package com.tave.attendance.domain.member;
+package com.tave.attendance.domain.member.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
