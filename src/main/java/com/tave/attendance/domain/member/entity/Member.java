@@ -1,4 +1,4 @@
-package com.tave.attendance.domain.member;
+package com.tave.attendance.domain.member.entity;
 
 import com.tave.attendance.global.common.entity.BaseTimeEntity;
 import jakarta.persistence.*;
@@ -27,6 +27,9 @@ public class Member extends BaseTimeEntity {
 
     @Column(name = "email", unique = true)
     String email;
+
+    @Column(name = "password")
+    String password;
 
     @Column(name = "birthday")
     String birthday;

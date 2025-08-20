@@ -1,6 +1,6 @@
 package com.tave.attendance.global.auth.jwt.service;
 
-import com.tave.attendance.domain.member.Role;
+import com.tave.attendance.domain.member.entity.Role;
 import com.tave.attendance.global.auth.jwt.JwtTokenType;
 import com.tave.attendance.global.auth.jwt.dto.JwtTokenClaimsDto;
 import com.tave.attendance.global.auth.jwt.dto.JwtTokenResponseDto;
@@ -11,8 +11,6 @@ import com.tave.attendance.global.auth.jwt.utils.JwtValidator;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
