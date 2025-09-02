@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  app:
+    image: tjdgus3488/tave16-attendance:latest
+    container_name: app
+    ports:
+      - "8080:8080"
+    environment:
+      - TZ=Asia/Seoul
+    restart: always
+    env_file:
+      - /opt/app/.env
