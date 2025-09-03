@@ -40,6 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Ensure server dir
         uses: appleboy/ssh-action@v1.2.0
         with:
@@ -50,7 +51,6 @@ jobs:
             sudo mkdir -p ${{ env.SERVER_DIR }}
             sudo chown $USER:$USER ${{ env.SERVER_DIR }}
 
-      # 1) .env 생성 (여기문서)
       - name: Create .env file
         run: |
           cat <<'EOF' > .env
@@ -62,7 +62,12 @@ jobs:
           JWT_ACCESS_TOKEN_EXPIRATION=${{ secrets.JWT_ACCESS_TOKEN_EXPIRATION }}
           EOF
 
-      # 2) docker-compose.yml 과 .env 를 서버로 업로드
+      - name: Verify compose and env exist
+        run: |
+          ls -al
+          test -f ./docker-compose.yml || { echo "❌ docker-compose.yml not found"; exit 1; }
+          test -f ./.env || { echo "❌ .env not found"; exit 1; }
+
       - name: Copy compose & env to server
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -70,11 +75,11 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           source: |
-            docker-compose.yml
-            .env
+            ./docker-compose.yml
+            ./.env
           target: "${{ env.SERVER_DIR }}"
+          debug: true
 
-      # 3) 서버에서 로그인 → pull → up -d → 정리
       - name: SSH deploy (compose pull & up -d)
         uses: appleboy/ssh-action@v1.2.0
         with:
