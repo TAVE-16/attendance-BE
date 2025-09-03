@@ -54,8 +54,8 @@ jobs:
       - name: Create .env file
         run: |
           cat <<'EOF' > .env
-          SPRING_PROFILES_ACTIVE=prod
           DB_URL=${{ secrets.DB_URL }}
+          DB_NAME=${{ secrets.DB_NAME }}
           DB_USERNAME=${{ secrets.DB_USERNAME }}
           DB_PASSWORD=${{ secrets.DB_PASSWORD }}
           JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}
