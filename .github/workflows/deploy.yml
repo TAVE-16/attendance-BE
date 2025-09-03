@@ -39,7 +39,7 @@ jobs:
     needs: build-and-push
     runs-on: ubuntu-latest
     steps:
-      # 0) 서버에 배포 경로 준비 (없으면 생성)
+      - uses: actions/checkout@v4
       - name: Ensure server dir
         uses: appleboy/ssh-action@v1.2.0
         with:
