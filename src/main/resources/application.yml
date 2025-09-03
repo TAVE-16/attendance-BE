@@ -11,3 +11,9 @@ spring:
 tave:
   key: ${JWT_SECRET_KEY}
   accessTokenExpiration: ${JWT_ACCESS_TOKEN_EXPIRATION}
+
+springdoc:
+  swagger-ui:
+    operations-sorter: method
+    tags-sorter: alpha
+  override-with-generic-response: false
