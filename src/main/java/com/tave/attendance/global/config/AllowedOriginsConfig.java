@@ -7,7 +7,10 @@ public class AllowedOriginsConfig {
 
     public String[] getAllowedOrigins(){
         return new String[]{
-            "*"
+            "*",
+            "/v3/api-docs/**",
+            "/swagger-ui.html",
+            "/swagger-ui/**"
         };
     }
 
