@@ -33,7 +33,7 @@ jobs:
           push: true
           tags: |
             ${{ env.IMAGE }}:latest
-            ${{ env.IMAGE }}:${{ github.sha::7 }}
+            ${{ env.IMAGE }}:${{ github.sha }}
 
   deploy:
     needs: build-and-push
