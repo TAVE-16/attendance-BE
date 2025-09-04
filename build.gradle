@@ -60,6 +60,8 @@ dependencies {
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	testImplementation 'org.assertj:assertj-core:3.25.3'
+	testImplementation 'org.mockito:mockito-inline:5.2.0'
 }
 
 tasks.named('test') {
