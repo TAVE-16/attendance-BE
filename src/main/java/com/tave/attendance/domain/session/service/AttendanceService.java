@@ -1,8 +1,10 @@
 package com.tave.attendance.domain.session.service;
 
 import com.tave.attendance.domain.member.entity.Member;
+import com.tave.attendance.domain.member.exception.InvalidPhoneLast8Exception;
 import com.tave.attendance.domain.member.exception.PhonenumberMismatchException;
 import com.tave.attendance.domain.member.repository.MemberRepository;
+import com.tave.attendance.domain.member.utils.PhoneNumberUtils;
 import com.tave.attendance.domain.session.entity.Session;
 import com.tave.attendance.domain.session.exception.SessionNotFoundException;
 import com.tave.attendance.domain.session.repository.SessionRepository;
@@ -31,7 +33,12 @@ public class AttendanceService {
         Session session = sessionRepository.findById(sessionId)
                 .orElseThrow(SessionNotFoundException::new);
 
-        Member member = memberRepository.findByPhoneNumber(req.phoneNumber())
+        String last8 = PhoneNumberUtils.last8(req.phoneNumber());
+        if (last8.length() != 8) {
+            throw new InvalidPhoneLast8Exception();
+        }
+
+        Member member = memberRepository.findByPhoneTail(last8)
                 .orElseThrow(PhonenumberMismatchException::new);
 
         SessionMember sm = sessionMemberRepository.findBySessionIdAndMemberId(session.getId(), member.getId())
