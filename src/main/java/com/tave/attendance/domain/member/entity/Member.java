@@ -58,4 +58,8 @@ public class Member extends BaseTimeEntity {
         this.phoneNumberDigits = PhoneNumberUtils.toDigits(this.phoneNumber);
     }
 
+    public void applyScore(int score) {
+        this.attendanceScore += score;
+    }
+
 }
