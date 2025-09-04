@@ -6,6 +6,8 @@ import com.tave.attendance.domain.session.dto.SessionUpdateReqDto;
 import com.tave.attendance.domain.session.service.AttendanceService;
 import com.tave.attendance.domain.session.service.SessionService;
 import com.tave.attendance.domain.sessionmember.dto.MarkAttendanceReqDto;
+import com.tave.attendance.global.auth.annotations.AuthGuard;
+import com.tave.attendance.global.auth.guards.AdminGuard;
 import com.tave.attendance.global.common.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +29,7 @@ public class SessionController {
 
     @PostMapping
     @Operation(summary = "[SESSION] 세션 생성 API")
+    @AuthGuard({AdminGuard.class})
     public ApiResponse<SessionDto> create(@RequestBody SessionCreateReqDto req) {
         SessionDto response = sessionService.create(req);
         return ApiResponse.response(HttpStatus.OK, SESSION_CREATE_SUCCESS.getMessage(), response);
@@ -34,18 +37,21 @@ public class SessionController {
 
     @GetMapping
     @Operation(summary = "[SESSION] 전체 세션 조회 API")
+    @AuthGuard({AdminGuard.class})
     public ApiResponse<List<SessionDto>> getAll() {
         return ApiResponse.response(HttpStatus.OK, SESSION_GET_ALL_SUCCESS.getMessage(), sessionService.getAll());
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "[SESSION] 단일 세션 조회 API")
+    @AuthGuard({AdminGuard.class})
     public ApiResponse<SessionDto> getById(@PathVariable Long id) {
         return ApiResponse.response(HttpStatus.OK, SESSION_GET_SUCCESS.getMessage(), sessionService.getById(id));
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "[SESSION] 세션 수정 API")
+    @AuthGuard({AdminGuard.class})
     public ApiResponse<Void> update(@PathVariable Long id, @RequestBody SessionUpdateReqDto req) {
         sessionService.update(id, req);
         return ApiResponse.response(HttpStatus.OK, SESSION_UPDATE_SUCCESS.getMessage());
@@ -53,6 +59,7 @@ public class SessionController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "[SESSION] 세션 삭제 API")
+    @AuthGuard({AdminGuard.class})
     public ApiResponse<Void> delete(@PathVariable Long id) {
         sessionService.delete(id);
         return ApiResponse.response(HttpStatus.OK, SESSION_DELETE_SUCCESS.getMessage());
