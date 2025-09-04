@@ -1,5 +1,6 @@
 package com.tave.attendance.domain.member.entity;
 
+import com.tave.attendance.domain.member.utils.PhoneNumberUtils;
 import com.tave.attendance.global.common.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -25,6 +26,10 @@ public class Member extends BaseTimeEntity {
     @Column(name = "phone_number", unique = true)
     String phoneNumber;
 
+    @Column(name="phone_number_digits", length = 20)
+    private String phoneNumberDigits;
+
+
     @Column(name = "email", unique = true)
     String email;
 
@@ -47,5 +52,10 @@ public class Member extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "field")
     FieldType field;
+
+    @PrePersist @PreUpdate
+    void normalizePhone() {
+        this.phoneNumberDigits = PhoneNumberUtils.toDigits(this.phoneNumber);
+    }
 
 }
