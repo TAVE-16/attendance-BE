@@ -27,21 +27,28 @@ public class SessionMember extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // 세션 ID FK
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "session_id", nullable = false)
     private Session session;
 
-    // 멤버 ID FK
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
-    // 출석 상태 (varchar)
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private String status;
+    private Status status;
 
-    // 출석 시간 (DateTime)
     @Column(name = "attendance_time")
     private LocalDateTime attendanceTime;
+
+    @PrePersist
+    void onCreate() {
+        if (status == null) status = Status.ABSENT; // 기본값
+    }
+
+    public void mark(Status status, LocalDateTime at) {
+        this.status = status;
+        this.attendanceTime = at;
+    }
 }

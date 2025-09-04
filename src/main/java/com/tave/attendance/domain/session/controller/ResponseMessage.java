@@ -15,7 +15,9 @@ public enum ResponseMessage {
 
     SESSION_UPDATE_SUCCESS("[세션] 수정에 성공했습니다."),
 
-    SESSION_DELETE_SUCCESS("[세션] 삭제에 성공했습니다.");
+    SESSION_DELETE_SUCCESS("[세션] 삭제에 성공했습니다."),
+
+    ATTENDANCE_MARK_SUCCESS("[출석] 출석 체크에 성공했습니다.");
 
     private final String message;
 

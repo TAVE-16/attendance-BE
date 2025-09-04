@@ -1,22 +1,30 @@
 package com.tave.attendance.domain.session.service;
 
+import com.tave.attendance.domain.member.entity.Member;
+import com.tave.attendance.domain.member.repository.MemberRepository;
 import com.tave.attendance.domain.session.dto.SessionCreateReqDto;
 import com.tave.attendance.domain.session.dto.SessionDto;
 import com.tave.attendance.domain.session.dto.SessionUpdateReqDto;
 import com.tave.attendance.domain.session.entity.Session;
 import com.tave.attendance.domain.session.exception.SessionNotFoundException;
 import com.tave.attendance.domain.session.repository.SessionRepository;
+import com.tave.attendance.domain.sessionmember.entity.SessionMember;
+import com.tave.attendance.domain.sessionmember.entity.Status;
+import com.tave.attendance.domain.sessionmember.repository.SessionMemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class SessionService {
 
     private final SessionRepository sessionRepository;
+    private final MemberRepository memberRepository;
+    private final SessionMemberRepository sessionMemberRepository;
 
     public SessionDto create(SessionCreateReqDto req) {
         Session session = Session.builder()
@@ -26,7 +34,19 @@ public class SessionService {
                 .earlyBirdDeadline(req.earlyBirdDeadline())
                 .seminarTime(req.seminarTime())
                 .build();
-        return toDto(sessionRepository.save(session));
+        Session saved = sessionRepository.save(session);
+
+        List<Member> members = memberRepository.findAll();
+        List<SessionMember> links = members.stream()
+                .map(m -> SessionMember.builder()
+                        .session(saved)
+                        .member(m)
+                        .status(Status.ABSENT)
+                        .build())
+                .collect(Collectors.toList());
+        sessionMemberRepository.saveAll(links);
+
+        return toDto(saved);
     }
 
     public List<SessionDto> getAll() {
