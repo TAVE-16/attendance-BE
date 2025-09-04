@@ -5,6 +5,7 @@ import com.tave.attendance.domain.member.exception.InvalidPhoneLast8Exception;
 import com.tave.attendance.domain.member.exception.PhonenumberMismatchException;
 import com.tave.attendance.domain.member.repository.MemberRepository;
 import com.tave.attendance.domain.member.utils.PhoneNumberUtils;
+import com.tave.attendance.domain.member.utils.ScoreUtils;
 import com.tave.attendance.domain.session.entity.Session;
 import com.tave.attendance.domain.session.exception.SessionNotFoundException;
 import com.tave.attendance.domain.session.repository.SessionRepository;
@@ -57,6 +58,18 @@ public class AttendanceService {
             status = Status.TARDY;
         }
 
+        int oldPenalty = ScoreUtils.penaltyOf(sm.getStatus(), sm.getAttendanceTime(), tardyStart);
+
+        // 상태/체크시간을 이번값으로 반영
         sm.mark(status, now);
+
+        // 새 페널티
+        int newPenalty = ScoreUtils.penaltyOf(status, now, tardyStart);
+
+        // 차이만 적용 (예: 이전 -10 → 이번 -30이면 delta = -20)
+        int score = newPenalty - oldPenalty;
+        if (score != 0) {
+            member.applyScore(score);
+        }
     }
 }
