@@ -65,10 +65,10 @@ public class SessionController {
         return ApiResponse.response(HttpStatus.OK, SESSION_DELETE_SUCCESS.getMessage());
     }
 
-    @PostMapping("/{id}/mark")
+    @PostMapping("/mark")
     @Operation(summary = "[SESSION] 출석 처리 (전화번호 인증)")
-    public ApiResponse<Void> markAttendance(@PathVariable Long id, @RequestBody MarkAttendanceReqDto req) {
-        attendanceService.markAttendance(id, req);
+    public ApiResponse<Void> markAttendance(@RequestBody MarkAttendanceReqDto req) {
+        attendanceService.markAttendance(req);
         return ApiResponse.response(HttpStatus.OK, ATTENDANCE_MARK_SUCCESS.getMessage());
     }
 }

@@ -7,6 +7,7 @@ import com.tave.attendance.domain.member.repository.MemberRepository;
 import com.tave.attendance.domain.member.utils.PhoneNumberUtils;
 import com.tave.attendance.domain.member.utils.ScoreUtils;
 import com.tave.attendance.domain.session.entity.Session;
+import com.tave.attendance.domain.session.exception.SessionNotFoundByDateException;
 import com.tave.attendance.domain.session.exception.SessionNotFoundException;
 import com.tave.attendance.domain.session.repository.SessionRepository;
 import com.tave.attendance.domain.sessionmember.dto.MarkAttendanceReqDto;
@@ -18,7 +19,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 
 @Service
@@ -30,7 +33,10 @@ public class AttendanceService {
     private final SessionMemberRepository sessionMemberRepository;
 
     @Transactional
-    public void markAttendance(Long sessionId, MarkAttendanceReqDto req) {
+    public void markAttendance(MarkAttendanceReqDto req) {
+
+        Long sessionId = findTodaySessionId();
+
         Session session = sessionRepository.findById(sessionId)
                 .orElseThrow(SessionNotFoundException::new);
 
@@ -71,5 +77,12 @@ public class AttendanceService {
         if (score != 0) {
             member.applyScore(score);
         }
+    }
+
+    private Long findTodaySessionId() {
+        LocalDate today = LocalDate.now(ZoneId.of("Asia/Seoul"));
+        return sessionRepository.findBySessionDate(today)
+                .map(Session::getId)
+                .orElseThrow(SessionNotFoundByDateException::new);
     }
 }
