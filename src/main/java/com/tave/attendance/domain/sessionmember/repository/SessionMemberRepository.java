@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface SessionMemberRepository extends JpaRepository<SessionMember, Long> {
-    Optional<SessionMember> findBySession_IdAndMember_Id(Long sessionId, Long memberId);
+    Optional<SessionMember> findBySessionIdAndMemberId(Long sessionId, Long memberId);
 }

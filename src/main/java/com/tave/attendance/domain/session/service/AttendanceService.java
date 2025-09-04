@@ -34,7 +34,7 @@ public class AttendanceService {
         Member member = memberRepository.findByPhoneNumber(req.phoneNumber())
                 .orElseThrow(PhonenumberMismatchException::new);
 
-        SessionMember sm = sessionMemberRepository.findBySession_IdAndMember_Id(session.getId(), member.getId())
+        SessionMember sm = sessionMemberRepository.findBySessionIdAndMemberId(session.getId(), member.getId())
                 .orElseThrow(SessionMemberNotFoundException::new);
 
         LocalDateTime now = LocalDateTime.now();
