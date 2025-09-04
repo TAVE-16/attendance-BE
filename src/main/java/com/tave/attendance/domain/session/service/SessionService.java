@@ -1,6 +1,7 @@
 package com.tave.attendance.domain.session.service;
 
 import com.tave.attendance.domain.member.entity.Member;
+import com.tave.attendance.domain.member.entity.Role;
 import com.tave.attendance.domain.member.repository.MemberRepository;
 import com.tave.attendance.domain.session.dto.SessionCreateReqDto;
 import com.tave.attendance.domain.session.dto.SessionDto;
@@ -36,7 +37,7 @@ public class SessionService {
                 .build();
         Session saved = sessionRepository.save(session);
 
-        List<Member> members = memberRepository.findAll();
+        List<Member> members = memberRepository.findAllByRole(Role.MEMBER);
         List<SessionMember> links = members.stream()
                 .map(m -> SessionMember.builder()
                         .session(saved)

@@ -5,6 +5,7 @@ import com.tave.attendance.domain.member.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -13,5 +14,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByEmailAndRole(String email, Role role);
 
     Optional<Member> findByPhoneNumber(String phoneNumber);
+
+    List<Member> findAllByRole(Role role);
 
 }
