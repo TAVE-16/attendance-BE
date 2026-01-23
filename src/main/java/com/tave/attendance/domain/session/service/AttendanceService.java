@@ -64,19 +64,11 @@ public class AttendanceService {
             status = Status.TARDY;
         }
 
-        int oldPenalty = ScoreUtils.penaltyOf(sm.getStatus(), sm.getAttendanceTime(), tardyStart);
-
-        // 상태/체크시간을 이번값으로 반영
         sm.mark(status, now);
 
-        // 새 페널티
-        int newPenalty = ScoreUtils.penaltyOf(status, now, tardyStart);
-
-        // 차이만 적용 (예: 이전 -10 → 이번 -30이면 delta = -20)
-        int score = newPenalty - oldPenalty;
-        if (score != 0) {
-            member.applyScore(score);
-        }
+        // 점수 계산 후 바로 반영
+        int score = ScoreUtils.scoreOf(status, now, tardyStart);
+        member.applyScore(score);
     }
 
     private Long findTodaySessionId() {
